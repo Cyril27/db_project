@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guest Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .container-wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .bg-image {
+            background-image: url('/static/images/guesthome.jpeg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            position: relative;
+        }
+        .bg-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Dark black overlay */
+            z-index: 1;
+        }
+        .navbar{
+            background-color: #000000;
+        }
+        /* Centered Content Styling */
+        .content-center {
+            z-index: 2;
+            text-align: center;
+            max-width: 600px;
+        }
+        /* Title Styling */
+        .title-font {
+            font-family: 'Georgia', serif;
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #f0f0f0;
+        }
+        .description-font {
+            font-family: 'Arial', sans-serif;
+            font-size: 1.2rem;
+            color: #dcdcdc;
+        }
+        /* Footer Styling */
+        .footer {
+            background-color: #000000;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-wrapper">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">Guest Dashboard</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('visitor_page') }}">Visitor-Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('client_page') }}">Client-Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout')}}">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Background Image Section with Content -->
+    <div class="bg-image">
+        <div class="bg-overlay"></div>
+        
+        <div class="content-center">
+            <h1 class="title-font">Welcome, {{gname}}!</h1>
+            <p class="description-font">
+                Whether you’re here to admire or acquire, Artisano connects you with art that inspires!
+            </p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Project by Cyril Van Leer and Anushka Bhatnagar &copy; For COMS 4111, Columbia University (2024)</p>
+    </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</body>
+</html>

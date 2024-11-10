@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Enter Bank Account</title>
+</head>
+<body>
+    <!-- Modal -->
+    <div class="modal" tabindex="-1" role="dialog" style="display: block;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Bank Account Required</h5>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{{ url_for('client_page') }}">
+                        <div class="form-group">
+                            <label for="bank_account">Bank Account Number</label>
+                            <input type="text" class="form-control" id="bank_account" name="bank_account" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
