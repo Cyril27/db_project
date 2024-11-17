@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing Below 7 Dashboard</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container my-4">
+    <h1 class="mb-4">Welcome to the Marketing Below 7 Dashboard</h1>
+    <p class="text-muted">You are logged in as a Marketing staff member with below level 7 access.</p>
+
+    <!-- Exhibitions Managed by You Table -->
+    <h2 class="my-4">Exhibitions Managed by You</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="thead-light">
+                <tr>
+                    <th>Exhibition Name</th>
+                    <th>Gallery Name</th>
+                    <th>Exhibition Date</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Exhibition ID</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for exhibition in managed_below_exhib %}
+                <tr>
+                    <td>{{ exhibition.exhibition_name }}</td>
+                    <td>{{ exhibition.gallery_name }}</td>
+                    <td>{{ exhibition.exhibition_date }}</td>
+                    <td>{{ exhibition.start_time }}</td>
+                    <td>{{ exhibition.end_time }}</td>
+                    <td>{{ exhibition.exhibition_id }}</td>
+                    <td>
+                        <form action="{{ url_for('remove_management') }}" method="POST" style="display:inline;">
+                            <input type="hidden" name="exhibition_id" value="{{ exhibition.exhibition_id }}">
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Exhibitions Available for You to Manage Table -->
+    <h2 class="my-4">Exhibitions Available for You to Manage</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="thead-light">
+                <tr>
+                    <th>Exhibition Name</th>
+                    <th>Gallery Name</th>
+                    <th>Exhibition Date</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Staff ID</th>
+                    <th>Exhibition ID</th>
+                    <th>Existing Marketing ID</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for exhibition in candidate_below_info %}
+                <tr>
+                    <td>{{ exhibition.exhibition_name }}</td>
+                    <td>{{ exhibition.gallery_name }}</td>
+                    <td>{{ exhibition.exhib_date }}</td>
+                    <td>{{ exhibition.start_time }}</td>
+                    <td>{{ exhibition.end_time }}</td>
+                    <td>{{ exhibition.staff_id }}</td>
+                    <td>{{ exhibition.exhibition_id }}</td>
+                    <td>{{ exhibition.existing_marketing_id }}</td>
+                    <td>
+                        <form action="{{ url_for('add_management') }}" method="POST" style="display:inline;">
+                            <input type="hidden" name="exhibition_id" value="{{ exhibition.exhibition_id }}">
+                            <button type="submit" class="btn btn-primary btn-sm">Manage</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
