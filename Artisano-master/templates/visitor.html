@@ -1,0 +1,197 @@
+<!-- visitor.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitor Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <style>
+        .footer {
+            background-color: #000000;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        .navbar {
+            background-color: #000000;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{url_for('guest_home') }}">Guest Dashboard</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('visitor_page') }}">Visitor-Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('client_page') }}">Client-Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout')}}">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-5">
+        <h2>My Tickets</h2>
+        <!-- Search Form -->
+        <!-- <form class="form-inline mb-4" action="{{ url_for('visitor_page') }}" method="GET">
+            <input type="text" class="form-control mr-2" name="name" placeholder="Exhibition Name">
+            <input type="date" class="form-control mr-2" name="exhib_date" placeholder="Exhibition Date">
+            <input type="time" class="form-control mr-2" name="start_time" placeholder="Start Time">
+            <input type="text" class="form-control mr-2" name="city" placeholder="City">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form> -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Exhibition Name</th>
+                    <th>Exhibition Date</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Description</th>
+                    <th>Gallery Name</th>
+                    <th>City</th>
+                    <th>Delete Ticket</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ticket in my_tickets %}
+                    <tr>
+                        <td>{{ ticket.name }}</td>
+                        <td>{{ ticket.exhib_date }}</td>
+                        <td>{{ ticket.start_time }}</td>
+                        <td>{{ ticket.end_time }}</td>
+                        <td>{{ ticket.description }}</td>
+                        <td>{{ ticket.gallery_name }}</td>
+                        <td>{{ ticket.city }}</td>
+                        <td>
+                            <form action="{{ url_for('delete_ticket') }}" method="POST" style="display:inline;">
+                                <input type="hidden" name="exhibition_id" value="{{ ticket.exhibition_id }}">
+                                <button type="submit" class="btn btn-danger">Delete Ticket</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h2 class="mb-4">Exhibitions</h2>
+
+        <!-- Search Form -->
+        <!-- <form class="form-inline mb-4" action="{{ url_for('visitor_page') }}" method="GET">
+            <input type="text" class="form-control mr-2" name="name" placeholder="Exhibition Name">
+            <input type="date" class="form-control mr-2" name="exhib_date" placeholder="Exhibition Date">
+            <input type="time" class="form-control mr-2" name="start_time" placeholder="Start Time">
+            <input type="text" class="form-control mr-2" name="city" placeholder="City">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form> -->
+
+        <!-- Table -->
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Exhibition Name</th>
+                    <th>Exhibition Date</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Description</th>
+                    <th>Gallery Name</th>
+                    <th>City</th>
+                    <th>Get Ticket</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in exhibitions %}
+                <tr>
+                    <td>{{ row.name }}</td>
+                    <td>{{ row.exhib_date }}</td>
+                    <td>{{ row.start_time }}</td>
+                    <td>{{ row.end_time }}</td>
+                    <td>{{ row.description }}</td>
+                    <td>{{ row.gallery_name }}</td>
+                    <td>{{ row.city }}</td>
+                    <td>
+                        <button class="btn btn-success get-ticket-btn" 
+                                data-exhibition-id="{{ row.exhibition_id }}" 
+                                data-gallery-id="{{ row.gallery_id }}">Get Ticket</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <footer class="footer">
+        <p>Project by Cyril Van Leer and Anushka Bhatnagar &copy; For COMS 4111, Columbia University (2024)</p>
+    </footer>
+
+    <script>
+        $(document).ready(function() {
+            $(".get-ticket-btn").click(function(event) {
+                event.preventDefault();
+                
+                // Get exhibition_id and gallery_id from the button's data attributes
+                let exhibitionId = $(this).data("exhibition-id");
+                let galleryId = $(this).data("gallery-id");
+                let button = $(this);
+    
+                console.log(exhibitionId, galleryId);
+    
+                // Send AJAX request to get ticket
+                $.ajax({
+                    url: "{{ url_for('get_ticket') }}",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        exhibition_id: exhibitionId,
+                        gallery_id: galleryId
+                    }),
+                    success: function(response) {
+                        alert(response.message);
+                        
+                        // If ticket booking is successful, move the row to "My Tickets" table
+                        if (response.exhibition) {
+                            let exhibitionRow = button.closest("tr").remove();
+                            let myTicketsTable = $("#my-tickets-table tbody");
+    
+                            let newRow = `
+                                <tr>
+                                    <td>${response.exhibition.name}</td>
+                                    <td>${response.exhibition.exhib_date}</td>
+                                    <td>${response.exhibition.start_time}</td>
+                                    <td>${response.exhibition.end_time}</td>
+                                    <td>${response.exhibition.description}</td>
+                                    <td>${response.exhibition.gallery_name}</td>
+                                    <td>${response.exhibition.city}</td>
+                                    <td>
+                                        <form action="{{ url_for('delete_ticket') }}" method="POST" style="display:inline;">
+                                            <input type="hidden" name="exhibition_id" value="${exhibitionId}">
+                                            <button type="submit" class="btn btn-danger">Delete Ticket</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            `;
+                            myTicketsTable.append(newRow);
+                            location.reload();
+                        }
+                    },
+                    error: function(xhr) {
+                        alert("Error: " + xhr.responseJSON.message);
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
