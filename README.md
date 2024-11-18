@@ -1,3 +1,5 @@
 # db project
 
-Don't forget to remove the connection.commit() and to uncomment the last query on the purchase_art route ;)
+- Need to modify the /client_page route to also create an inventory 
+- Need to modify the below_7 html
+- Need to document in the file
